@@ -1,4 +1,4 @@
-# DPCFFormer: Diverse Pooling and Cross-Feature Fusion Transformer for Hyperspectral Image Classification
+# DPCFFormer: Lightweight Transformer with Diverse Pooling and Cross Feature Fusion for Hyperspectral Image Classification
 
 ___________
 
@@ -18,6 +18,13 @@ ___________
 
 **Figure 4: Flowchart of the PPCF module.**
 
+DPCFFormer is a lightweight Transformer-based model for hyperspectral image classification (HSIC). It replaces traditional attention mechanisms with parameter‑free pooling and cross‑fusion modules, achieving high accuracy with significantly fewer parameters. The model consists of three novel components:
+
+SCSP (Spectral‑Correlation and Spatial‑Pooling): Selects the most correlated neighboring pixels using spectral correlation, then performs overlapping patch extraction and pooling.
+
+GPCF (Group‑Pooling and Cross‑Feature Fusion): Groups selected feature vectors, applies multi‑mode pooling (min/mean/max), and fuses them with the center pixel to form 1‑D long sequences.
+
+PPCF (Pyramid‑Pooling and Cross‑Feature Fusion): Replaces multi‑head self‑attention with multi‑scale pooling and cross‑fusion, drastically reducing parameters.
 
 Requirements
 ---------------------
@@ -31,10 +38,15 @@ Requirements
 
 Instructions
 ---------------------
-    Functions.py ...... Script for data processing,calculating training loss,visualization and the parameter-free and training-free part of ESSPFormer(SCHPFP and SSGPCF).
-    ESSPFormer.py ...... The implementation of SPPCF_encoder,the part of ESSPFormer with parameters to be trained.
-    train_and_test_multi.py ...... Main script for hyperspectral image classification.
+    
+    DPCFFormer/
+    ├── model.py           # DPCFFormer model architecture (PPCF, Encoder, GroupPooling)
+    ├── preprocessing.py   # SCSP and GPCF modules, correlation cache precomputation
+    ├── train.py           # Training, evaluation, and classification map generation
+    ├── utils.py           # Data loading, mirror padding, metrics, cache I/O
+    ├── datasets/          # Placeholder – download HSI datasets here
+    ├── corr_cache/        # Precomputed correlation caches (auto‑generated)
+    ├── results/           # Saved models and classification maps
+    └── README.md
 
-1. The results of Pixel Selection for all pixels in each dataset were saved in the "saved_corr_pos" folder after the first calculation. In the subsequent experiments, directly obtaining the Pixel Selection results through the coordinate index can avoid a large number of repetitive correlation calculations.
 
-2. Pixel Selection and Patch Extraction use two patch sizes. The new central pixel brought by Pixel Selection will face insufficient padding and patch offset relative to the original image during Patch Extraction. oabi stands for overal bias and is a variable used to solve these problems.
